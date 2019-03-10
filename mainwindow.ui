@@ -65,16 +65,12 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="chartView" native="true">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>10</y>
-      <width>741</width>
-      <height>681</height>
-     </rect>
-    </property>
-   </widget>
+  </widget>
+  <widget class="QDockWidget" name="chartView">
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents"/>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

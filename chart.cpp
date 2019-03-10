@@ -1,16 +1,16 @@
 #include "chart.h"
 
-Chart::Chart(QLineSeries *series1, QString title, QString axisXLabel,QString axisYLabel, int rangeX, int rangeY, QString seriesName1,
-             bool hasSeries2,  QLineSeries *series2, QString seriesName2,
+Chart::Chart(QScatterSeries *series1, QString title, QString axisXLabel,QString axisYLabel, int rangeX, int rangeY, QString seriesName1,
+             bool hasSeries2,  QScatterSeries *series2, QString seriesName2,
              QWidget *parent)
     : QChartView(parent), m_countRotation(0), m_isPressed(false),
-      m_rangeX(rangeX), m_rangeY(rangeY), m_series1(series1), m_hasSeries2(hasSeries2)
+      m_rangeX(rangeX), m_rangeY(rangeY), m_series1(series1), m_hasSeries2(hasSeries2), m_series2(series2)
 {
     if(m_hasSeries2)
     {
         m_chart = new QChart(); // utworzenie nowego obiektu wykresu
-        series1->setName(seriesName1);
-        series2->setName(seriesName2);
+        m_series1->setName(seriesName1);
+        m_series2->setName(seriesName2);
 
         m_chart->addSeries(series1);
         m_chart->addSeries(series2);
@@ -18,21 +18,21 @@ Chart::Chart(QLineSeries *series1, QString title, QString axisXLabel,QString axi
 
         m_pen1 = new QPen(QRgb(0xf40659));
         m_pen1->setWidth(2);
-        series1->setPen(*m_pen1);
+        m_series1->setPen(*m_pen1);
         m_pen2 = new QPen(QRgb(0x0033cc));
         m_pen2->setWidth(2);
-        series2->setPen(*m_pen2);
+        m_series2->setPen(*m_pen2);
 
     }else
     {
         m_chart = new QChart(); // utworzenie nowego obiektu wykresu
-        series1->setName(seriesName1);
-        m_chart->addSeries(series1);
+        m_series1->setName(seriesName1);
+        m_chart->addSeries(m_series1);
 
 
         m_pen1 = new QPen(QRgb(0xf40659));
-        m_pen1->setWidth(2);
-        series1->setPen(*m_pen1);
+        m_pen1->setWidth(1);
+        m_series1->setPen(*m_pen1);
     }
 
 
@@ -52,7 +52,7 @@ Chart::Chart(QLineSeries *series1, QString title, QString axisXLabel,QString axi
     m_chart->axisX()->setRange(0,rangeX);   // ustawienie zakresu osi x
     m_chart->axisX()->setTitleText(axisXLabel); // ustawienie tytułu osi x
 
-    m_chart->axisY()->setRange(0,rangeY);   // ustawienie zakresu osi y
+    m_chart->axisY()->setRange(-rangeY,rangeY);   // ustawienie zakresu osi y
     m_chart->axisY()->setTitleText(axisYLabel); // ustawienie tytułu osi y
 
 
@@ -67,6 +67,8 @@ Chart::~Chart()
     delete m_pen2;
     delete m_coord; // usuwanie obiektu wyświetlającego koordynacje kursora
     delete m_chart; // usuwanie obiektu wykresu
+    m_series1 = nullptr;
+    m_series2 = nullptr;
 }
 // metoda odbierająca dane z sygnału najechania kursorem na wykres w postaci parametrów funkcji
 void Chart::showWindowCoord(QPointF point, bool state)
@@ -115,7 +117,7 @@ void Chart::wheelEvent(QWheelEvent *event)
     }else // jeżeli warość przybliżeń wynosi zero to...
     {
         chart()->axisX()->setRange(0, m_rangeX); // ustaw zakres osi x na domyślny
-        chart()->axisY()->setRange(0, m_rangeY); // ustaw zakres osi y na domyślny
+        chart()->axisY()->setRange(-m_rangeY, m_rangeY); // ustaw zakres osi y na domyślny
     }
     return QChartView::wheelEvent(event);
 }
@@ -152,9 +154,9 @@ void Chart::mouseMoveEvent(QMouseEvent *event)
         chart()->scroll(deltaX, deltaY);        // przesunięcie zakresu osi o wartości tego przesunięcia
         m_pos = temp;           // przypisanie aktualnej pozycji do zmiennej klasy
     }
-    m_coord->setHtml("<div style='background-color: #ffffff; font-size: 15px;'>"+QString("x: %1\ny: %2")
+    /*m_coord->setHtml("<div style='background-color: #ffffff; font-size: 15px;'>"+QString("x: %1\ny: %2")
                      .arg(m_chart->mapToValue(event->pos()).x())
-                     .arg(m_chart->mapToValue(event->pos()).y())+"</div>");     // przypisanie koordynacji kursora do okna z informacją o położeniu
+                     .arg(m_chart->mapToValue(event->pos()).y())+"</div>"); */    // przypisanie koordynacji kursora do okna z informacją o położeniu
     QChartView::mouseMoveEvent(event);                                          // w postaci kodu html w celu przypisania koloru tła
 }
 
