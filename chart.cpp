@@ -1,7 +1,7 @@
 #include "chart.h"
 
 Chart::Chart(QScatterSeries *series1, QString title, QString axisXLabel,QString axisYLabel, int rangeX, int rangeY, QString seriesName1,
-             bool hasSeries2,  QScatterSeries *series2, QString seriesName2,
+             bool hasSeries2,  QLineSeries *series2, QString seriesName2,
              QWidget *parent)
     : QChartView(parent), m_countRotation(0), m_isPressed(false),
       m_rangeX(rangeX), m_rangeY(rangeY), m_series1(series1), m_hasSeries2(hasSeries2), m_series2(series2)
@@ -17,7 +17,7 @@ Chart::Chart(QScatterSeries *series1, QString title, QString axisXLabel,QString 
 
 
         m_pen1 = new QPen(QRgb(0xf40659));
-        m_pen1->setWidth(2);
+        m_pen1->setWidth(1);
         m_series1->setPen(*m_pen1);
         m_pen2 = new QPen(QRgb(0x0033cc));
         m_pen2->setWidth(2);

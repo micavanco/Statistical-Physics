@@ -5,6 +5,7 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QScatterSeries>
 #include <QtCharts/QValueAxis>
+#include <QtCharts/QLineSeries>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -13,7 +14,7 @@ class Chart : public QChartView
     Q_OBJECT
 public:
     explicit Chart(QScatterSeries *series1, QString title, QString axisXLabel,QString axisYLabel, int rangeX, int rangeY, QString seriesName1,
-                   bool hasSeries2 = false,  QScatterSeries *series2 = nullptr, QString seriesName2 = "",
+                   bool hasSeries2 = false,  QLineSeries *series2 = nullptr, QString seriesName2 = "",
                    QWidget *parent = nullptr);
     ~Chart();
 
@@ -35,7 +36,7 @@ private:
     QPen   *m_pen1;
     QPen   *m_pen2;
     QScatterSeries *m_series1;
-    QScatterSeries *m_series2;
+    QLineSeries *m_series2;
 
 
     void wheelEvent(QWheelEvent *event);        // metoda obsługi zdarzeń pokrętła myszki
